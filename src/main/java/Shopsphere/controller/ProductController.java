@@ -1,8 +1,10 @@
 package Shopsphere.controller;
 
-import jakarta.validation.Valid;
-import Shopsphere.entity.Product;
+import Shopsphere.dto.ProductCreateRequestDTO;
+import Shopsphere.dto.ProductUpdateRequestDTO;
+import Shopsphere.dto.ProductResponseDTO;
 import Shopsphere.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,38 +20,37 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @PostMapping
-    public Product createProduct(@Valid @RequestBody Product product) {
-        return productService.createProduct(product);
+    public ProductResponseDTO createProduct(
+            @Valid @RequestBody ProductCreateRequestDTO request) {
+
+        return productService.createProduct(request);
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ProductResponseDTO getProductById(
+            @PathVariable Long id) {
+
         return productService.getProductById(id);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(
+    public ProductResponseDTO updateProduct(
             @PathVariable Long id,
-            @Valid @RequestBody Product product) {
-    
-        return productService.updateProduct(id, product);
+            @Valid @RequestBody ProductUpdateRequestDTO request) {
+
+        return productService.updateProduct(id, request);
     }
 
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
-    
-        boolean deleted = productService.deleteProduct(id);
-    
-        if (!deleted) {
-            return "Product not found";
-        }
-    
+
+        productService.deleteProduct(id);
+
         return "Product deleted successfully";
     }
-
 }

@@ -62,4 +62,19 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
+
+        @ExceptionHandler(ProductNotFoundException.class)
+        public ResponseEntity<Map<String, Object>> handleProductNotFound(
+                ProductNotFoundException ex) {
+
+        Map<String, Object> response = Map.of(
+                "status", 404,
+                "message", ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(response);
+        }
+
 }
