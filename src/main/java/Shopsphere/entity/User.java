@@ -1,6 +1,8 @@
 package Shopsphere.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +20,11 @@ public class User {
     private String password;
 
     private String phone;
+    @Column(nullable = false)
+    private boolean active = true;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
@@ -68,4 +75,21 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setUser(this);
+    }
+    public boolean isActive() {
+    return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
 }

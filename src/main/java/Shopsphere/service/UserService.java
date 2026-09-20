@@ -19,8 +19,8 @@ public class UserService {
 
     public UserResponseDTO getUserById(Long id) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findByIdAndActiveTrue(id)
+        .orElseThrow(() -> new UserNotFoundException("User not found"));
 
 
         UserResponseDTO dto = new UserResponseDTO();
@@ -56,5 +56,14 @@ public UserResponseDTO createUser(UserRequestDTO request) {
     response.setPhone(savedUser.getPhone());
 
     return response;
+}
+public void deactivateUser(Long id) {
+
+User user = userRepository.findByIdAndActiveTrue(id)
+        .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+    user.setActive(false);
+
+    userRepository.save(user);
 }
 }
